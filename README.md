@@ -1,3 +1,8 @@
-<h1>Задание первое</h1>
-<img width="1920" height="1080" alt="ex1" src="https://github.com/user-attachments/assets/8796d4ca-8d7e-4307-ab50-5f7c60643ecc" />
-авьваьдл
+<h1>Лабораторная работа 1</h1>
+
+<h4>Задание 1</h4>
+
+name = input("Введите ваше имя:")
+age = input("Введите ваш возраст:")
+print("Привет", name,"! Через год тебе будет", int(age) + 1,"!")
+<img width="1077" height="323" alt="image" src="https://github.com/user-attachments/assets/f55fdea4-cc72-4206-9e1d-e5bdb415f687" />
