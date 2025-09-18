@@ -65,5 +65,22 @@ print("Длина (символов):",len(I))
 ```
 <img width="1086" height="354" alt="image" src="https://github.com/user-attachments/assets/49b3e0cb-213b-4363-90c6-4bb3ce65c3ba" />
 
+### Задание 6
+
+```python
+f = ["Максимов Максим 18 True","Геннадьев Геннадий 17 False","Алексеев Алексей 17 True"]
+k1 = 0
+k2 = 0
+for i in f:
+    if i.count("True") > 0:
+        k1 += 1 
+    else:
+        k2 += 1 
+print(k1,k2)
+```
+<img width="1091" height="339" alt="image" src="https://github.com/user-attachments/assets/d5b208de-e062-41f3-b765-51d2fa3be827" />
+
+
+
 
 
