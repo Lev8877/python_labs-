@@ -80,6 +80,46 @@ print(k1,k2)
 ```
 <img width="1091" height="339" alt="image" src="https://github.com/user-attachments/assets/d5b208de-e062-41f3-b765-51d2fa3be827" />
 
+### Задание 7
+
+``` python
+cif = "0123456789"
+buk = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+spec = "."
+shifr = "thisisabracadabraHt1eadljjl12ojh."
+shifr = list(shifr)
+fin = ""
+k = 0
+s = True
+first = 0 
+second = 0 
+stop = False
+
+for i in range (len(shifr)):
+    ind = i 
+    if shifr[ind] in buk:
+        fin += shifr[ind]
+        first = i
+    if shifr[i] in cif and s == True:
+        fin += shifr[i+1]
+        s = False 
+        second = i + 1
+    shag = second - first  
+    ostalos = len(shifr[:second])
+    if shag > 0 and ostalos != len(shifr):
+        for j in range(ostalos+shag,len(shifr),shag):
+            fin += shifr[j]
+            if shifr[j] == ".":
+                stop = True
+    if stop == True:
+        break
+
+
+ 
+print(fin) #Дай бог вам в помощь с этим кодом...
+```
+<img width="1084" height="354" alt="image" src="https://github.com/user-attachments/assets/05caf981-a900-411e-8424-e562b8ace4c7" />
+
 
 
 
