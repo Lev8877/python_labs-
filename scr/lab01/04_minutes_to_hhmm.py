@@ -1,12 +1,9 @@
-m = input()
-m = int(m)
-h = m // 60
-c = m % 60
-mn = h * 60 
-mnn = m - mn 
-if c <= 9:
-    total = total = str(h) + ":" + "0" + str(mnn)
+m = int(input())
+k = m // 60
+ost = m - k * 60 
+if ost <= 9:
+    total = total = str(k) + ":" + "0" + str(ost)
 else:
-    total = str(h) + ":" + str(mnn)
+    total = str(k) + ":" + str(ost)
 print("Минуты:",m)
 print(total)
