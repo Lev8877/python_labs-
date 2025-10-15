@@ -137,8 +137,7 @@ print(fin)
 
 ### Задание 1
 ```python
-#Здесь я немного не понял как нужно получать входные данные и заморочился... В общем выбирайте какую функцию хотите применить (консоль все подскажет), если выбрали флаттен то сколько массивов добавить, и добавляйте сам тест-кейс
-
+import sys
 def min_max(nums: list[float | int]): 
     return float(min(nums)) if float(min(nums)) % 1 != 0 else int(min(nums)) ,float(max(nums)) if float(max(nums)) % 1 != 0 else int(max(nums))
 
@@ -153,7 +152,6 @@ def flatten(mat: list[list | tuple]):
 
 buk = "abcdefghijklmnopqrstuvwxyz"
 cif = "0123456789"
-ErrorValue = False
 
 print("What function you are going to use?")
 print("min_max - 1, unique_sorted - 2, flatten - 3")
@@ -168,14 +166,20 @@ if c == 1 or c == 2:
 s = []
 if c == 3:
     print("how many lists you want, write number")
-    z = int(input())
+    z = input()
+    if str(z) not in cif:
+        print("ValueError")
+        sys.exit() 
+    z = int(z)
     print(f"write numbers in one line {z} times")
     for j in range(z):
         l = []
         y = input().replace(","," ").split()
         for v in range(len(y)):
+            if str(y[v]) in buk:
+                print("TypeError")
+                sys.exit() 
             if y[v].count("0") == 0 and y[v].count("1") == 0 and y[v].count("2") == 0 and y[v].count("3") == 0 and y[v].count("4") == 0 and y[v].count("5") == 0 and y[v].count("6") == 0 and y[v].count("7") == 0 and y[v].count("8") == 0 and y[v].count("9") == 0:
-                ErrorValue = True
                 break
             l.append(int(y[v]) if y[v].count(".") == 0 else float(y[v]))
         s.append(l)
@@ -188,10 +192,7 @@ if c == 1:
 elif c == 2:
         print(unique_sorted(m) if len(m) > 0 else [])
 else:
-    if ErrorValue == True:
-        print("ErrorValue")
-    else:
-        print(flatten(s))
+    print(flatten(s))
 ```
 <img width="868" height="526" alt="image" src="https://github.com/user-attachments/assets/519006f6-f58c-41fd-8709-99cd5dd4ae84" />
 
@@ -249,7 +250,6 @@ print(col_sums([[1, 2, 3], [4, 5, 6]]))
 
 ### Задание 3
 ```python
-space = " "
 buk = "abcdefghijklmnopqrstuvwxyz"
 def format_record(rec: tuple[str, str, float]):
     result = []
@@ -261,16 +261,16 @@ def format_record(rec: tuple[str, str, float]):
         c = rec[0].split()
         second = c[1][0] + "."
         third = c[2][0] + "."
-        NEW_FIO = c[0][0].upper() + c[0][1:] + " " + second.upper() + third.upper()
+        NEW_FIO = c[0][0].upper() + c[0][1:].lower() + " " + second.upper() + third.upper()
     elif FIO_LEN == 2:
         c = rec[0].split()
         second = c[1][0] + "."
-        NEW_FIO = c[0][0].upper() + c[0][1:] + " " + second.upper()
+        NEW_FIO = c[0][0].upper() + c[0][1:].lower() + " " + second.upper()
     result.append(NEW_FIO)
     if rec[1] == "":
         return "ValueError"
     else:
-        NEW_GROUP = "гр." + space + rec[1]
+        NEW_GROUP = "гр." + " " + rec[1]
     result.append(NEW_GROUP)
     GPU_STR = str(rec[2])
     for j in GPU_STR:
@@ -280,10 +280,10 @@ def format_record(rec: tuple[str, str, float]):
         else:
             return "ErrorValue"
     result.append(NEW_GPU)
-    return result[0] +"," + space + result[1]+ "," + space +result[2]
+    return result[0] +"," + " " + result[1]+ "," + " " +result[2]
 
 
-print(format_record(("Иванов Иван Иванович", "BIVT-25", 4.6)))
+print(format_record(("ИВАНОВ ИВАН ИВАНОВИЧ", "BIVT-25", 4.6)))
 print(format_record(("Петров Пётр", "IKBO-12", 5.0)))
 print(format_record(("Петров Пётр Петрович", "IKBO-12", 5.0)))
 print(format_record(("  сидорова  анна   сергеевна ", "ABB-01", 3.999)))
