@@ -30,15 +30,83 @@ def tokenize(text: str):
     return res 
 
 def count_freq(tokens: list[str]) -> dict[str, int]:
-    result = {}
+    set_tokens = list(set(tokens))
+    turpleeesss = {}
     for word in tokens:
-        result[word] = result.get(word,0) + 1
-    return result
+        turpleeesss[word] = turpleeesss.get(word,0) + 1
+    return turpleeesss
+            
+    
 
-def top_n(freq: dict[str, int], n: int = 5) -> list[tuple[str, int]]:
-    sorted_set = sorted(freq.items(), key = lambda item: item[1],reverse=1 )
-    return sorted_set
-        
+def top_n(freq: dict[str, int], ds: int = 2) -> list[tuple[str, int]]:
+    sorted_list = sorted(freq.items(),key = lambda x: x[1] ,reverse=1)
+    result = []
+    sets = []
+    for y in range (len(sorted_list)):
+        sum = 0
+        sum2 = 0
+        if sorted_list[y] == sorted_list[-1]:
+            break
+        for x in sorted_list[y][0]:
+            sum += ord(x)
+        for x in sorted_list[y+1][0]:
+            sum2 += ord(x)
+        if sorted_list[y][1] == sorted_list[y+1][1] and sum > sum2:
+            a = sorted_list[y]
+            b = sorted_list[y+1]
+            sorted_list[y] = b
+            sorted_list[y+1] = a
+    return sorted_list[:ds]
+
+def B_count(a):
+    k = 0
+    for x in a.split():
+        k += 1
+    return k 
+
+def B_uni_my(a):
+    result = []
+    k = 0
+    l = ""
+    for x in a.split():
+        for y in x:
+            if y.isalpha():
+                l += y
+            if x[-1] == y:
+                l += " "
+    result = l.split()
+    turp = {}
+    for x in result:
+        turp[x] = turp.get(x,0) + 1
+    for x in turp:
+        k += 1
+    return k 
+
+def B_top_n(a:str):
+    result_final = ""
+    result = []
+    sort = []
+    l = ""
+    for x in a.split():
+        for y in x:
+            if y.isalpha():
+                l += y
+            if x[-1] == y:
+                l += " "
+    result = l.split()
+    turp = {}
+    for x in result:
+        turp[x] = turp.get(x,0) + 1
+    sort = sorted(turp.items(), key = lambda x: x[1],reverse=1)
+    for x in sort:
+        if len(result_final) == 0:
+            result_final += str(x[0]) + " " + str(x[1])
+        else:
+            result_final += "\n" + str(x[0]) + " " + str(x[1])
+    return result_final
+
+
+
 
 
 print(normalize("ПрИвЕт\nМИр\t"))
@@ -51,7 +119,7 @@ print(tokenize("hello,world!!!"))
 print(tokenize("по-настоящему круто"))
 print(tokenize("2025 год"))
 print(tokenize("emoji 😀 не слово"))
-a=count_freq(["a","b","a","c","b","a"])
+a=count_freq(["bb","aa","bb","aa","cc"])
 print(a)
 print(top_n(a))
 
