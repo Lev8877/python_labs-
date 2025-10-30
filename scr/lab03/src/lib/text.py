@@ -109,17 +109,17 @@ def B_top_n(a:str):
 
 
 
-print(normalize("ПрИвЕт\nМИр\t"))
-print(normalize("ёжик, Ёлка",yo2e=True,))
-print(normalize("Hello\r\nWorld"))
-print(normalize("  двойные   пробелы  "))
-
-print(tokenize("привет мир"))
-print(tokenize("hello,world!!!"))
-print(tokenize("по-настоящему круто"))
-print(tokenize("2025 год"))
-print(tokenize("emoji 😀 не слово"))
-a=count_freq(["bb","aa","bb","aa","cc"])
-print(a)
-print(top_n(a))
+# print(normalize("ПрИвЕт\nМИр\t"))
+# print(normalize("ёжик, Ёлка",yo2e=True,))
+# print(normalize("Hello\r\nWorld"))
+# print(normalize("  двойные   пробелы  "))
+# 
+# print(tokenize("привет мир"))
+# print(tokenize("hello,world!!!"))
+# print(tokenize("по-настоящему круто"))
+# print(tokenize("2025 год"))
+# print(tokenize("emoji 😀 не слово"))
+# a=count_freq(["bb","aa","bb","aa","cc"])
+# print(a)
+# print(top_n(a))
 
