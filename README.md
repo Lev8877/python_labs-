@@ -439,11 +439,77 @@ print(f"Топ:\n{B_top_n(c)}")
 
 
 
+## Лабораторная работа 3
+
+### Задание 1
+```python
+from pathlib import Path
+import csv
+from pathlib import Path
+from typing import Iterable, Sequence
+def read_text(path: str | Path, encoding: str = "UTF-8") -> str: #Можно выбрать либо ISO-8859-5 либо UTF-8 либо cp1251
+    path_1 = Path(path)
+    if not(path_1.is_file()):
+        raise FileNotFoundError
+    if encoding != "ISO-8859-5" and  encoding != "UTF-8" and  encoding != "cp1251": 
+        raise ValueError(f"Unsupported encoding: {encoding}")
+    a = path_1.read_text(encoding=encoding)
+    a = a.replace(" ","")
+    return a 
+
+def write_csv(rows: Iterable[Sequence], path: str | Path,
+              header: tuple[str, ...] | None = None) -> None:
+    p = Path(path)
+    rows = list(rows)
+    with p.open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f,delimiter=",")
+        if header is not None:
+            w.writerow(header)
+        if len(rows) != 0:
+            row0 = rows[0]
+        for r in rows:
+            if len(row0) != len(r):
+                raise ValueError
+            w.writerow(r)
+
+txt = read_text(r"C:\Users\kiri-\OneDrive\Documents\GitHub\python_labs-\data\lab04\input.txt")
+print(txt)
+write_csv([("word","count"),("test",3)], "data/lab04/check.csv",["sigma","sigma"])
+```
+![photo_2025-10-30_11-58-38](https://github.com/user-attachments/assets/c390f514-58ec-46c2-a255-b9a0e464ec58)
 
 
+### Задание 2
+```python
+from pathlib import Path
+import csv
+import os
+import sys
+if __package__ is None or __package__ == "":
+    print("Перезапускаю корректно: py -m scr.lab04.text_report ...\n")
+    os.system("py -m scr.lab04.text_report")
+    sys.exit()
+from scr.lab03.src.lib.text import normalize, tokenize, top_n, count_freq
+p = Path(r"C:\Users\kiri-\OneDrive\Documents\GitHub\python_labs-\data\lab04\input.txt")
 
+with p.open("r", newline="", encoding="utf-8") as f:
+    text = f.read()
+a = normalize(text)
+b = tokenize(a)
+c = count_freq(b)
+d = top_n(c)
+def csv_writter(rows, path):
+    p = Path(path)
+    rows1 = list(rows)
+    with p.open("w",newline="",encoding="utf-8") as ff:
+        w = csv.writer(ff,delimiter=",")
+        w.writerow(["word","count"])
+        for x in rows1:
+            w.writerow(x)
 
-
+csv_writter(d, "data/lab04/check.csv")
+```
+![photo_2025-10-30_11-58-43](https://github.com/user-attachments/assets/7c421324-731a-4dfd-8fed-f3dfc91ebdfd)
 
 
 
