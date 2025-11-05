@@ -1,0 +1,37 @@
+[
+  {
+    "id": "1",
+    "name": "Анна Иванова",
+    "age": "28",
+    "city": "Москва",
+    "email": "anna.ivanova@example.com"
+  },
+  {
+    "id": "2",
+    "name": "Дмитрий Петров",
+    "age": "35",
+    "city": "Санкт-Петербург",
+    "email": "dmitry.petrov@example.com"
+  },
+  {
+    "id": "3",
+    "name": "Елена Смирнова",
+    "age": "22",
+    "city": "Казань",
+    "email": "elena.smirnova@example.com"
+  },
+  {
+    "id": "4",
+    "name": "Иван Кузнецов",
+    "age": "41",
+    "city": "Новосибирск",
+    "email": "ivan.kuznetsov@example.com"
+  },
+  {
+    "id": "5",
+    "name": "Ольга Соколова",
+    "age": "30",
+    "city": "Екатеринбург",
+    "email": "olga.sokolova@example.com"
+  }
+]
