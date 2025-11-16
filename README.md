@@ -511,5 +511,104 @@ csv_writter(d, "data/lab04/check.csv")
 ```
 ![photo_2025-10-30_11-58-43](https://github.com/user-attachments/assets/7c421324-731a-4dfd-8fed-f3dfc91ebdfd)
 
+## Лабораторная работа 5
+
+### Задание 1
+```python
+from pathlib import Path
+import json 
+import csv
+def json_to_csv(json_path: str) -> None:
+    p = Path(json_path)
+    with p.open("r",encoding="utf-8") as f:
+        try:
+            a = json.load(f) 
+        except json.JSONDecodeError:
+            raise ValueError
+    if not a:
+        raise ValueError
+    for x in a:
+        if type(x) != dict:
+            raise ValueError
+    dict1 = {}
+    with open("data/lab05/ex1.csv","w",encoding="utf-8") as ff:
+        headers = []
+        for x in a:
+            for k,_ in x.items():
+                headers.append(k)
+            break
+        w = csv.writer(ff,delimiter=",")
+        w.writerow(headers)
+        for x in a:
+            values = []
+            for _,v in x.items():
+                values.append(v)
+            w.writerow(values)
+#json_to_csv(r"C:\Users\kiri-\OneDrive\Documents\GitHub\python_labs-\data\lab05\samples\people.json")
+
+def csv_to_json(csv_path: str) -> None:
+    p = Path(csv_path)
+    with open(p,"r",encoding="utf-8") as f:
+        headers = [] 
+        reader = csv.DictReader(f)
+        data = list(reader)
+        for x in data:
+            for k,_ in x.items():
+                headers.append(k)
+            break
+    a = json.dumps(data,ensure_ascii=False,indent=2)
+    b = json.loads(a)
+    with open("data/lab05/ex1.csv","w",encoding="utf-8") as ff:
+        ff.write(a)
+        
+csv_to_json(r"C:\Users\kiri-\OneDrive\Documents\GitHub\python_labs-\data\lab05\samples\peoples.csv")
+```
+![ex1 1](https://github.com/user-attachments/assets/b1f23bb7-b091-429d-a362-f09fd110d8bd)
+![ex1 2](https://github.com/user-attachments/assets/56b323f8-aa51-48a8-893c-16e9637358a9)
+
+### Задание 2
+```python
+from openpyxl import Workbook
+import csv
+from pathlib import Path
+
+def csv_to_xlsx(csv_path: str, xlsx_path: str) -> None:
+    p = Path(csv_path)
+    if not p.exists():
+        raise FileNotFoundError
+    if p.suffix.lower() != '.csv':
+        raise ValueError
+    
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Sheet1"
+
+    with open(p, encoding="utf-8") as f:
+        reader = csv.reader(f)
+        rows = list(reader)
+        if not rows:
+            raise ValueError
+        for row in rows:
+            ws.append(row)
+
+    for col in ws.columns:
+        max_len = 8
+        for cell in col:
+            if cell.value:
+                length = len(str(cell.value))
+                if length > max_len:
+                    max_len = length
+        col_letter = col[0].column_letter
+        ws.column_dimensions[col_letter].width = max_len
+
+    wb.save(xlsx_path)
+
+csv_to_xlsx(
+    "data/lab05/ex1.csv",
+    "data/lab05/samples/ex1.xlsx"
+)
+```
+![ex2](https://github.com/user-attachments/assets/282d10f5-30bd-436b-9b7d-35216ea39af0)
+
 
 
