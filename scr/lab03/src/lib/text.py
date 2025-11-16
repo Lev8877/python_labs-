@@ -20,7 +20,7 @@ def tokenize(text: str):
     res = []
     l = ""
     for i in text:
-        if i in buk_eng or i in buk_rus or i in cif or i in "_-/\:":
+        if i in buk_eng or i in buk_rus or i in cif or i in r"_-/\:":
             l += i 
         elif len(l) != 0:
             res.append(l)
@@ -38,24 +38,30 @@ def count_freq(tokens: list[str]) -> dict[str, int]:
             
     
 
-def top_n(freq: dict[str, int], ds: int = 2) -> list[tuple[str, int]]:
-    sorted_list = sorted(freq.items(),key = lambda x: x[1] ,reverse=1)
-    result = []
-    sets = []
-    for y in range (len(sorted_list)):
-        sum = 0
-        sum2 = 0
-        if sorted_list[y] == sorted_list[-1]:
-            break
-        for x in sorted_list[y][0]:
-            sum += ord(x)
-        for x in sorted_list[y+1][0]:
-            sum2 += ord(x)
-        if sorted_list[y][1] == sorted_list[y+1][1] and sum > sum2:
-            a = sorted_list[y]
-            b = sorted_list[y+1]
-            sorted_list[y] = b
-            sorted_list[y+1] = a
+# def top_n(freq: dict[str, int], ds: int = 2) -> list[tuple[str, int]]:
+#     sorted_list = sorted(freq.items(),key = lambda x: x[1] ,reverse=1)
+#     result = []
+#     sets = []
+#     for y in range (len(sorted_list)):
+#         sum = 0
+#         sum2 = 0
+#         if sorted_list[y] == sorted_list[-1]:
+#             break
+#         for x in sorted_list[y][0]:
+#             sum += ord(x)
+#         for x in sorted_list[y+1][0]:
+#             sum2 += ord(x)
+#         if sorted_list[y][1] == sorted_list[y+1][1] and sum > sum2:
+#             a = sorted_list[y]
+#             b = sorted_list[y+1]
+#             sorted_list[y] = b
+#             sorted_list[y+1] = a
+#     return sorted_list[:ds]
+def my_top_n(freq: dict[str, int], ds: int = 2) -> list[tuple[str, int]]:
+    sorted_list = sorted(
+        freq.items(),
+        key=lambda x: (-x[1], sum(ord(ch) for ch in x[0]))
+    )
     return sorted_list[:ds]
 
 def B_count(a):
@@ -121,5 +127,5 @@ def B_top_n(a:str):
 # print(tokenize("emoji 😀 не слово"))
 # a=count_freq(["bb","aa","bb","aa","cc"])
 # print(a)
-# print(top_n(a))
+# print(my_top_n(a))
 
