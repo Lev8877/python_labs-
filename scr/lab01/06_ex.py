@@ -9,4 +9,4 @@ for i in range(len(m)):
         k1 += 1
     elif m[i].count("False") > 0:
         k2 += 1
-print(k1,k2)
+print(k1, k2)

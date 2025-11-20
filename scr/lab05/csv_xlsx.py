@@ -2,13 +2,14 @@ from openpyxl import Workbook
 import csv
 from pathlib import Path
 
+
 def csv_to_xlsx(csv_path: str, xlsx_path: str) -> None:
     p = Path(csv_path)
     if not p.exists():
         raise FileNotFoundError
-    if p.suffix.lower() != '.csv':
+    if p.suffix.lower() != ".csv":
         raise ValueError
-    
+
     wb = Workbook()
     ws = wb.active
     ws.title = "Sheet1"
@@ -33,7 +34,5 @@ def csv_to_xlsx(csv_path: str, xlsx_path: str) -> None:
 
     wb.save(xlsx_path)
 
-csv_to_xlsx(
-    "data/lab05/ex1.csv",
-    "data/lab05/samples/ex1.xlsx"
-)
+
+csv_to_xlsx("data/lab05/ex1.csv", "data/lab05/samples/ex1.xlsx")

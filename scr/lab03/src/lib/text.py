@@ -1,9 +1,9 @@
 def normalize(text: str, *, casefold: bool = True, yo2e: bool = True):
     if casefold == True:
-        text = text.casefold() 
+        text = text.casefold()
     if yo2e == True:
-        text = text.replace("ё","е").replace("Ё","Е")
-    text = text.replace("\n"," ").replace("\r"," ").replace("\t"," ")
+        text = text.replace("ё", "е").replace("Ё", "Е")
+    text = text.replace("\n", " ").replace("\r", " ").replace("\t", " ")
     a = text.split()
     text1 = ""
     for i in a:
@@ -13,30 +13,33 @@ def normalize(text: str, *, casefold: bool = True, yo2e: bool = True):
             text1 += " " + i
     return text1
 
+
 buk_eng = "abcdefghijklmnopqrstuvwxyz"
 buk_rus = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
 cif = "0123456789"
+
+
 def tokenize(text: str):
     res = []
     l = ""
     for i in text:
         if i in buk_eng or i in buk_rus or i in cif or i in r"_-/\:":
-            l += i 
+            l += i
         elif len(l) != 0:
             res.append(l)
             l = ""
     if l:
         res.append(l)
-    return res 
+    return res
+
 
 def count_freq(tokens: list[str]) -> dict[str, int]:
     set_tokens = list(set(tokens))
     turpleeesss = {}
     for word in tokens:
-        turpleeesss[word] = turpleeesss.get(word,0) + 1
+        turpleeesss[word] = turpleeesss.get(word, 0) + 1
     return turpleeesss
-            
-    
+
 
 # def top_n(freq: dict[str, int], ds: int = 2) -> list[tuple[str, int]]:
 #     sorted_list = sorted(freq.items(),key = lambda x: x[1] ,reverse=1)
@@ -59,16 +62,17 @@ def count_freq(tokens: list[str]) -> dict[str, int]:
 #     return sorted_list[:ds]
 def my_top_n(freq: dict[str, int], ds: int = 2) -> list[tuple[str, int]]:
     sorted_list = sorted(
-        freq.items(),
-        key=lambda x: (-x[1], sum(ord(ch) for ch in x[0]))
+        freq.items(), key=lambda x: (-x[1], sum(ord(ch) for ch in x[0]))
     )
     return sorted_list[:ds]
+
 
 def B_count(a):
     k = 0
     for x in a.split():
         k += 1
-    return k 
+    return k
+
 
 def B_uni_my(a):
     result = []
@@ -83,12 +87,13 @@ def B_uni_my(a):
     result = l.split()
     turp = {}
     for x in result:
-        turp[x] = turp.get(x,0) + 1
+        turp[x] = turp.get(x, 0) + 1
     for x in turp:
         k += 1
-    return k 
+    return k
 
-def B_top_n(a:str):
+
+def B_top_n(a: str):
     result_final = ""
     result = []
     sort = []
@@ -102,8 +107,8 @@ def B_top_n(a:str):
     result = l.split()
     turp = {}
     for x in result:
-        turp[x] = turp.get(x,0) + 1
-    sort = sorted(turp.items(), key = lambda x: x[1],reverse=1)
+        turp[x] = turp.get(x, 0) + 1
+    sort = sorted(turp.items(), key=lambda x: x[1], reverse=1)
     for x in sort:
         if len(result_final) == 0:
             result_final += str(x[0]) + " " + str(x[1])
@@ -112,20 +117,16 @@ def B_top_n(a:str):
     return result_final
 
 
-
-
-
 # print(normalize("ПрИвЕт\nМИр\t"))
 # print(normalize("ёжик, Ёлка",yo2e=True,))
 # print(normalize("Hello\r\nWorld"))
 # print(normalize("  двойные   пробелы  "))
-# 
+#
 # print(tokenize("привет мир"))
 # print(tokenize("hello,world!!!"))
 # print(tokenize("по-настоящему круто"))
 # print(tokenize("2025 год"))
 # print(tokenize("emoji 😀 не слово"))
-# a=count_freq(["bb","aa","bb","aa","cc"])
-# print(a)
-# print(my_top_n(a))
-
+a = count_freq(["bb", "aa", "bb", "aa", "cc"])
+print(a)
+print(my_top_n(a))

@@ -1,4 +1,6 @@
 buk = "abcdefghijklmnopqrstuvwxyz"
+
+
 def format_record(rec: tuple[str, str, float]):
     result = []
     FIO = rec[0].split()
@@ -9,7 +11,9 @@ def format_record(rec: tuple[str, str, float]):
         c = rec[0].split()
         second = c[1][0] + "."
         third = c[2][0] + "."
-        NEW_FIO = c[0][0].upper() + c[0][1:].lower() + " " + second.upper() + third.upper()
+        NEW_FIO = (
+            c[0][0].upper() + c[0][1:].lower() + " " + second.upper() + third.upper()
+        )
     elif FIO_LEN == 2:
         c = rec[0].split()
         second = c[1][0] + "."
@@ -28,15 +32,10 @@ def format_record(rec: tuple[str, str, float]):
         else:
             return "ErrorValue"
     result.append(NEW_GPU)
-    return result[0] +"," + " " + result[1]+ "," + " " +result[2]
+    return result[0] + "," + " " + result[1] + "," + " " + result[2]
 
 
 print(format_record(("ИВАНОВ ИВАН ИВАНОВИЧ", "BIVT-25", 4.6)))
 print(format_record(("Петров Пётр", "IKBO-12", 5.0)))
 print(format_record(("Петров Пётр Петрович", "IKBO-12", 5.0)))
 print(format_record(("  сидорова  анна   сергеевна ", "ABB-01", 3.999)))
-        
-
-
-
-
