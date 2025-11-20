@@ -611,4 +611,133 @@ csv_to_xlsx(
 ![ex2](https://github.com/user-attachments/assets/282d10f5-30bd-436b-9b7d-35216ea39af0)
 
 
+## Лабораторная работа 6
 
+### Задание 1
+```python
+import argparse 
+from pathlib import Path 
+from ..lab03.src.lib.text import my_top_n
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="CLI‑утилиты лабораторной №6")
+    subparsers = parser.add_subparsers(dest="command")
+
+    # подкоманда cat
+    cat_parser = subparsers.add_parser("cat", help="Вывести содержимое файла")
+    cat_parser.add_argument("--input", required=True)
+    cat_parser.add_argument("-n", action="store_true", help="Нумеровать строки")
+
+    # подкоманда stats
+    stats_parser = subparsers.add_parser("stats", help="Частоты слов")
+    stats_parser.add_argument("--input", required=True,help="Просто путь, если абсюоютный то в ' ' ")
+    stats_parser.add_argument("--top", type=int, default=5,help="Сколько значений вывести, по умолчанию 5")
+
+    args = parser.parse_args()
+
+    if args.command == "cat":
+        result = [] 
+        k = 0
+        p = Path(args.input)
+        if not p.exists():
+            parser.error("Файл не существует")
+        if not p.is_file():
+            parser.error("Это не файл")   
+        with open(p, encoding="utf-8") as ff:
+            for line in ff:
+                if args.n:
+                    k += 1
+                    result.append(str(k) + "." + " " + line.strip())
+                else:
+                    result.append(line.strip())
+        for i in result:
+            print(i)
+    elif args.command == "stats":
+        freq = {}
+        p = Path(args.input)
+        if not p.exists():
+            parser.error("Файл не существует")
+        if not p.is_file():
+            parser.error("Это не файл") 
+        with open(p,encoding="utf-8") as f:
+            for line in f:
+                for slovo in line.split():
+                    freq[slovo] = freq.get(slovo, 0) + 1
+        top_n1 = my_top_n(freq, args.top)
+        for word, count in top_n1:
+            print(f"{word}: {count}")
+
+            
+if __name__ == "__main__":
+    main()
+```
+<img width="1919" height="1079" alt="ex1" src="https://github.com/user-attachments/assets/a078003a-db47-4ca5-9088-68091fa0eaa7" />
+
+### Задание 2
+```python
+import argparse
+from pathlib import Path
+from ..lab05.json_csv import json_to_csv, csv_to_json
+from ..lab05.csv_xlsx import csv_to_xlsx
+
+def main():
+    parser = argparse.ArgumentParser(description="Конвертеры данных")
+    sub = parser.add_subparsers(dest="cmd")
+
+    p1 = sub.add_parser("json2csv",help="Конвертировать JSON в CSV")
+    p1.add_argument("--in", dest="input", required=True,help="Входной JSON файл")
+    p1.add_argument("--out", dest="output", required=True,help="Выходной CSV файл")
+
+    p2 = sub.add_parser("csv2json",help="Конвертировать CSV в JSON")
+    p2.add_argument("--in", dest="input", required=True,help="Входной CSV файл")
+    p2.add_argument("--out", dest="output", required=True,help="Выходной JSON файл")
+
+    p3 = sub.add_parser("csv2xlsx",help="Конвертировать CSV в XLSX")
+    p3.add_argument("--in", dest="input", required=True,help="Входной CSV файл")
+    p3.add_argument("--out", dest="output", required=True,help="Выходной XLSX файл")
+
+    args = parser.parse_args()
+
+    if args.cmd == "json2csv":
+        pp = Path(args.output)
+        if not pp.exists():
+            parser.error("Файл не существует")
+        if not pp.is_file():
+            parser.error("Это не файл") 
+        p = Path(args.input)
+        if not p.exists():
+            parser.error("Файл не существует")
+        if not p.is_file():
+            parser.error("Это не файл")  
+        json_to_csv(args.input,args.output)
+
+    if args.cmd == "csv2json":
+        pp = Path(args.output)
+        if not pp.exists():
+            parser.error("Файл не существует")
+        if not pp.is_file():
+            parser.error("Это не файл") 
+        p = Path(args.input)
+        if not p.exists():
+            parser.error("Файл не существует")
+        if not p.is_file():
+            parser.error("Это не файл")  
+        csv_to_json(args.input,args.output)
+
+    if args.cmd == "csv2xlsx":
+        pp = Path(args.output)
+        if not pp.exists():
+            parser.error("Файл не существует")
+        if not pp.is_file():
+            parser.error("Это не файл")  
+        p = Path(args.input)
+        if not p.exists():
+            parser.error("Файл не существует")
+        if not p.is_file():
+            parser.error("Это не файл")  
+        csv_to_xlsx(args.input,args.output)
+
+if __name__ == "__main__":
+    main()
+```
+<img width="1919" height="1079" alt="ex2" src="https://github.com/user-attachments/assets/25847ba0-0e53-4741-8fe0-77c0e6a6b592" />
