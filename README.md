@@ -836,3 +836,102 @@ def test_csv_to_json_roundtrip(tmp_path: Path):
 
 # py -m pytest -q
 ```
+
+## Лабораторная работа 8
+
+### Задание 1
+```python
+from dataclasses import dataclass
+from datetime import date, datetime
+@dataclass
+class Student:
+    fio: str
+    birthdate: str
+    group: str
+    gpa: float
+
+
+    def __post_init__(self):
+        try:
+            datetime.strptime(self.birthdate, "%Y/%m/%d")
+        except ValueError:
+            raise ValueError("Неправильный формат даты")
+        
+        if not (0 <= self.gpa <= 5):
+            raise ValueError("gpa must be between 0 and 10")
+
+    def age(self) -> int:
+        parts = self.birthdate.replace("/", " ").replace("-", " ").split()
+        return int(date.today().year) - int(parts[0])
+
+    def to_dict(self) -> dict:
+        if None in (self.fio, self.birthdate, self.group, self.gpa):
+            raise ValueError("Не все поля заполнены")
+        return {
+            "fio": self.fio,
+            "birthdate": self.birthdate,
+            "group": self.group,
+            "gpa": self.gpa,
+        }
+
+    @classmethod
+    def from_dict(cls, d: dict):
+        return cls(**d)
+
+    def __str__(self):
+        return f"{self.fio}, {self.group}, {self.gpa}, {self.birthdate}"
+    
+s = Student("Иванов Иван", "2000/05/12", "A-01", 4)
+
+data = {
+    "fio": "Иванов Иван",
+    "birthdate": "2000/05/12",
+    "group": "A-01",
+    "gpa": 4,
+}
+if __name__ == "__main__":
+    print(s.birthdate)   
+    print(s.fio)  
+    print(s.group)  
+    print(s.gpa)  
+
+    print("----------------")
+
+    print(s.age())
+    print(s.to_dict())
+    print(Student.from_dict(data))
+    print(s.__str__())
+```
+<img width="1919" height="1018" alt="ex1" src="https://github.com/user-attachments/assets/8f14cb12-8f00-4259-b309-8fcbca6ec062" />
+
+### Задание 2
+```python
+import json 
+from pathlib import Path
+from models import Student
+
+stupids = [
+    Student("Иванов Иван", "2000/05/12", "A-01", 4),
+    Student("Петров Петр", "2001/03/10", "B-02", 4.5),
+]
+
+def students_to_json(students, path):
+    p = Path(path)
+    data = [s.to_dict() for s in students]
+    a = json.dumps(data, ensure_ascii=False, indent=2)
+    with open(p, "w", encoding="utf-8") as ff:
+        ff.write(a)
+
+def students_from_json(path):
+    p = Path(path)
+    with open(p, "r", encoding="utf-8") as ff:
+        data = json.load(ff)
+    return [Student.from_dict(d) for d in data]
+        
+
+if __name__ == "__main__":
+    #students_to_json(stupids, r"C:\Users\kiri-\OneDrive\Documents\GitHub\python_labs\data\lab08\students_input.json")
+    print(students_from_json(r"C:\Users\kiri-\OneDrive\Documents\GitHub\python_labs\data\lab08\students_output.json"))
+```
+<img width="1919" height="1021" alt="ex2" src="https://github.com/user-attachments/assets/95e7bf7e-0c16-441e-ae82-4937c32016ba" />
+
