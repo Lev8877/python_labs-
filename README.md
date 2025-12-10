@@ -935,3 +935,332 @@ if __name__ == "__main__":
 ```
 <img width="1919" height="1021" alt="ex2" src="https://github.com/user-attachments/assets/95e7bf7e-0c16-441e-ae82-4937c32016ba" />
 
+## Лабораторная работа 9
+
+### Задание 1
+```python
+import csv
+from pathlib import Path
+from scr.lab08.models import Student
+
+
+
+class Group:
+    def __init__(self, storage_path: str):
+        self.path = Path(storage_path)
+        if not self.path.exists():
+            self.path.write_text("fio,birthdate,group,gpa\n", encoding="utf-8")
+        else:
+            with open(self.path, "r", encoding="utf-8") as f:
+                first = f.readline().strip()
+            if first != "fio,birthdate,group,gpa":
+                self.path.write_text("fio,birthdate,group,gpa\n", encoding="utf-8")
+
+    def list(self) -> list[Student]:
+        result = []
+        with open(self.path, "r", encoding="utf-8") as f:
+            lines = f.readlines()
+
+        for line in lines[1:]:
+            line = line.strip()
+            if not line:
+                continue
+
+            parts = line.split(",")
+            if len(parts) != 4:
+                continue
+
+            fio, birthdate, group, gpa = parts
+
+            try:
+                gpa = float(gpa)
+            except:
+                continue
+
+            try:
+                student = Student(
+                    fio=fio,
+                    birthdate=birthdate,
+                    group=group,
+                    gpa=gpa
+                )
+            except:
+                continue
+
+            result.append(student)
+
+        return result
+
+    def add(self, student: Student):
+        with open(self.path, "a", encoding="utf-8", newline="") as f:
+            w = csv.writer(f, delimiter=",")
+            w.writerow([student.fio, student.birthdate, student.group, student.gpa])
+
+    def find(self, substr: str) -> list:
+        substr = substr.lower()
+        result = []
+        for student in self.list():
+            if substr in student.fio.lower():
+                result.append(student)
+        return result
+
+    def remove(self, fio: str):
+        rows = []
+        with open(self.path, "r", encoding="utf-8") as f:
+            lines = f.readlines()
+
+        for line in lines:
+            if line.startswith("fio,"):
+                rows.append(line)
+                continue
+            if line.strip() and not line.startswith(fio + ","):
+                rows.append(line)
+
+        with open(self.path, "w", encoding="utf-8") as f:
+            f.writelines(rows)
+
+    def update(self, fio: str, **fields):
+        students = self.list()
+        for s in students:
+            if s.fio == fio:
+                for k, v in fields.items():
+                    setattr(s, k, v)
+                break
+
+        with open(self.path, "w", encoding="utf-8", newline="") as f:
+            w = csv.writer(f, delimiter=",")
+            w.writerow(["fio", "birthdate", "group", "gpa"])
+            for s in students:
+                w.writerow([s.fio, s.birthdate, s.group, s.gpa])
+
+if __name__ == "__main__":
+    g = Group(r"C:\Users\kiri-\OneDrive\Documents\GitHub\python_labs\data\lab09\students.csv")
+
+g.add(Student("Иванов Иван", "2003/10/10", "БИВТ-21-1", 4.3))
+g.add(Student("Петров Пётр", "2004/05/01", "БИВТ-21-2", 3.9))
+g.add(Student("Сидоров Семён", "2002/12/12", "БИВТ-21-1", 4.7))
+
+
+for s in g.list():
+    print(s.fio, s.birthdate, s.group, s.gpa)
+
+for s in g.find("Иван"):
+    print(s.fio, s.group)
+
+g.update("Иванов Иван", gpa=4.9)
+
+g.remove("Петров Пётр")
+```
+<img width="1919" height="1021" alt="f420c7fe-ed8f-4130-97ec-c83ac1c1e0b7" src="https://github.com/user-attachments/assets/d20f2acf-0f6e-4058-a779-d89e60be5beb" />
+
+## Лабораторная работа 10
+
+### Задание 1
+```python
+from collections import deque
+
+
+class Stack:
+    def __init__(self):
+        self._data = []
+
+    def push(self, item):
+        self._data.append(item)
+
+    def pop(self):
+        if self.is_empty():
+            raise IndexError("pop from empty Stack")
+        return self._data.pop()
+
+    def peek(self):
+        if self.is_empty():
+            return None
+        return self._data[-1]
+
+    def is_empty(self) -> bool:
+        return not self._data
+
+    def __len__(self):
+        return len(self._data)
+
+
+class Queue:
+    def __init__(self):
+        self._data = deque()
+
+    def enqueue(self, item):
+        self._data.append(item)
+
+    def dequeue(self):
+        if self.is_empty():
+            raise IndexError("dequeue from empty Queue")
+        return self._data.popleft()
+
+    def peek(self):
+        if self.is_empty():
+            return None
+        return self._data[0]
+
+    def is_empty(self) -> bool:
+        return not self._data
+
+    def __len__(self):
+        return len(self._data)
+
+
+s = Stack()
+print("Stack empty:", s.is_empty())
+
+s.push(10)
+s.push(20)
+s.push(30)
+print("After pushes:", s)            # Stack([10, 20, 30])
+print("Peek:", s.peek())             # 30
+
+print("Pop:", s.pop())               # 30
+print("Pop:", s.pop())               # 20
+print("Pop:", s.pop())               # 10
+
+print("Stack empty after pops:", s.is_empty())
+
+
+print("\n=== TEST QUEUE ===")
+q = Queue()
+print("Queue empty:", q.is_empty())
+
+q.enqueue("A")
+q.enqueue("B")
+q.enqueue("C")
+print("After enqueue:", q)           # Queue(['A', 'B', 'C'])
+print("Peek:", q.peek())             # A
+
+print("Dequeue:", q.dequeue())       # A
+print("Dequeue:", q.dequeue())       # B
+print("Dequeue:", q.dequeue())       # C
+
+print("Queue empty after dequeues:", q.is_empty())
+```
+![Uploading ex1.png…]()
+
+### Задание 2
+```python
+from collections import deque
+
+class Node:
+    def __init__(self, value, next=None):
+        self.value = value
+        self.next = next
+
+class SinglyLinkedList:
+    def __init__(self):
+        self.head = None
+        self._size = 0
+
+    def append(self, value):
+        new_node = Node(value)
+        if self.head is None:
+            self.head = new_node
+            self._size += 1
+            return
+
+        current = self.head
+        while current.next is not None:
+            current = current.next
+
+        current.next = new_node
+        self._size += 1
+
+    def prepend(self, value):
+        new_node = Node(value, next=self.head)
+        self.head = new_node
+        self._size += 1
+
+    def insert(self, idx, value):
+        if idx < 0 or idx > self._size:
+            raise IndexError("index out of range")
+
+        if idx == 0:
+            self.prepend(value)
+            return
+
+        if idx == self._size:
+            self.append(value)
+            return
+
+        current = self.head
+        for _ in range(idx - 1):
+            current = current.next
+
+        new_node = Node(value, next=current.next)
+        current.next = new_node
+        self._size += 1
+
+    def remove_at(self, idx):
+        if idx < 0 or idx >= self._size:
+            raise IndexError("index out of range")
+
+        if idx == 0:
+            removed = self.head
+            self.head = self.head.next
+            self._size -= 1
+            return removed.value
+
+        current = self.head
+        for _ in range(idx - 1):
+            current = current.next
+
+        removed = current.next
+        current.next = removed.next
+        self._size -= 1
+        return removed.value
+
+    def __iter__(self):
+        current = self.head
+        while current is not None:
+            yield current.value
+            current = current.next
+
+    def __len__(self):
+        return self._size
+
+    def __repr__(self):
+        return f"SinglyLinkedList({list(self)})"
+    
+
+print("=== TEST LINKED LIST ===")
+lst = SinglyLinkedList()
+
+print("Empty list:", list(lst), "size =", len(lst))
+
+# append
+lst.append(10)
+lst.append(20)
+lst.append(30)
+print("After append:", list(lst), "size =", len(lst))
+
+# prepend
+lst.prepend(5)
+print("After prepend:", list(lst), "size =", len(lst))
+
+# insert in middle
+lst.insert(2, 15)  # [5, 10, 15, 20, 30]
+print("After insert idx=2:", list(lst), "size =", len(lst))
+
+# insert at start
+lst.insert(0, 1)
+print("After insert idx=0:", list(lst))
+
+# insert at end
+lst.insert(len(lst), 40)
+print("After insert at end:", list(lst))
+
+# remove_at
+removed = lst.remove_at(3)
+print(f"Removed index 3 ({removed}) →", list(lst), "size =", len(lst))
+
+# iteration test
+print("Iterate values:")
+for value in lst:
+    print(" ->", value)
+```
+![Uploading ex2.png…]()
