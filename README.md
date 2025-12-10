@@ -1140,7 +1140,8 @@ print("Dequeue:", q.dequeue())       # C
 
 print("Queue empty after dequeues:", q.is_empty())
 ```
-![Uploading ex1.png…]()
+<img width="1280" height="677" alt="ex1" src="https://github.com/user-attachments/assets/07dfce1e-b09b-4fbd-bde7-b1247cd712d3" />
+
 
 ### Задание 2
 ```python
@@ -1263,4 +1264,5 @@ print("Iterate values:")
 for value in lst:
     print(" ->", value)
 ```
-![Uploading ex2.png…]()
+<img width="1280" height="680" alt="ex2" src="https://github.com/user-attachments/assets/7a27003d-5089-43b7-bf08-c4479795c2a5" />
+
